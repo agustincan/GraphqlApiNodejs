@@ -1,0 +1,19 @@
+{
+  "name": "graphqlapinodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "npx nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.10.1",
+    "apollo-server-core": "^3.10.1",
+    "axios": "^0.27.2",
+    "graphql": "^16.6.0"
+  }
+}
