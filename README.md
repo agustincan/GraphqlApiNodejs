@@ -1,0 +1,3 @@
+# GraphqlApiNodejs
+
+Graphql training project
