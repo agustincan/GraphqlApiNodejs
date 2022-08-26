@@ -19,6 +19,7 @@ export const typeDefs = gql`
     type Query {
         sumpCount: Int!
         allSumps(code: String!): [Sump]!
+        getZoneById(id: ID!): Zone
         getZoneByName(name: String!): Zone
     }
 
@@ -39,11 +40,19 @@ export const resolvers = {
             console.log(args.code)
             return sumpsFromApi.filter(s => s.code == args.code)
         },
+        getZoneById: async (root, args) => {
+            
+            const { id } = args
+            const { data: zoneFromApi } = await axios.get(`${BASE_ZONE_URL}/get-byid/${id}`)
+            
+            console.log("zone retrieved", zoneFromApi)
+            return zoneFromApi
+        },
         getZoneByName: async (root, args) => {
             
             const { name } = args
             const { data: zoneFromApi } = await axios.get(`${BASE_ZONE_URL}/get-byname/${name}`)
-            
+            if(!zoneFromApi) throw new UserInputError("Zone does not exists")
             console.log("zone retrieved", zoneFromApi)
             return zoneFromApi
         },
@@ -51,20 +60,9 @@ export const resolvers = {
     Mutation: {
         createZone: async (root, args) => {
             const { name } = args
-            
             let newZone = { id: 0, name: name }
             console.log(newZone)
-            /*await axios.post(`${BASE_ZONE_URL}/`, newZone)
-                .then(data => {
-                    console.log(data)
-                    const { data: zoneFromApi } = data
-                    console.log(zoneFromApi)
-                    return zoneFromApi
-                })
-                .catch(error => {
-                    console.error(error)
-                    return error
-                })*/
+            
             try {
                 const { data: zoneFromApi } = await axios.post(`${BASE_ZONE_URL}/`, newZone)
                 console.log("zoneFromApi",zoneFromApi)
